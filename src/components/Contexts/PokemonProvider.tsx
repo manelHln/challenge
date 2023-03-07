@@ -57,6 +57,10 @@ export enum PokemonStat {
   speed = "speed"
 }
 
+export interface PokemonTypeData {
+  name: PokemonType;
+}
+
 const PokemonProvider: React.FC<PokemonProviderProps> = ({ children }) => {
   const [data, setData] = useState<INamedApiResource<IPokemon>[]>()
   const [pokemon, setPokemon] = useState<INamedApiResource<IPokemon>[]>()

@@ -37,6 +37,11 @@ const PokemonFilterTypes: React.FC<PokemonFilterTypesProps> = ({
     >
       <Stack
         spacing={1}
+        direction="row"
+        sx={{
+          display: "flex",
+          flexWrap: "wrap"
+        }}
       >
         {types.map((type) => (
           <Button

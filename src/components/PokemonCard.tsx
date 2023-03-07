@@ -11,6 +11,7 @@ interface PokemonCardProps {
   isFavourite: boolean
   onAddFavourite: () => void
   onRemoveFavourite: () => void
+  selectedTypes: PokemonType[]
 }
 
 const DURATION = 1000
@@ -19,7 +20,8 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
   pokemon,
   isFavourite,
   onAddFavourite,
-  onRemoveFavourite
+  onRemoveFavourite,
+  selectedTypes,
 }) => {
   const [loading, setLoading] = useState(true)
   const [theme, setTheme] = useState(baseTheme)
@@ -63,7 +65,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
 
   useEffect(() => {
     // only fetch data for pokemon in view
-    if (!isVisible) {
+    if (!isVisible && selectedTypes.length < 1) {
       return
     }
 
@@ -170,8 +172,8 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
         setEvolutions(chain)
       })
       .finally(() => setLoading(false))
-  }, [isVisible, pokemon.url])
-
+  }, [isVisible, pokemon.url, selectedTypes])
+  
   function handleToggleFavourite() {
     if (isFavourite) {
       onRemoveFavourite()
@@ -187,6 +189,12 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
   function handleCloseDialog() {
     setIsDialogOpen(false)
   }
+
+  function isSelected() {
+    return  selectedTypes.some(element => types.includes(element))
+  }
+
+  if (isSelected() === false && selectedTypes.length > 0) return null;
 
   return (
     <ThemeProvider theme={theme}>
@@ -241,7 +249,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({
         onBackdropClick={handleCloseDialog}
         onClose={handleCloseDialog}
       >
-        {loading ? (
+        {loading ?  (
           <div></div>
         ) : (
           <PokemonModal
